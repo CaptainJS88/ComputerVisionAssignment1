@@ -159,15 +159,48 @@ final_apple_img = cv2.cvtColor(apple_img_copy_hsv, cv2.COLOR_HSV2RGB)
 final_stop_sign_img = cv2.cvtColor(stop_sign_img_copy_hsv, cv2.COLOR_HSV2RGB)
 
 
-
+# Show Apple
 plt.imshow(final_apple_img)
 plt.title("Extracted Green Apple")
 plt.axis('off')
 plt.show()
 
+# Show Stop sign
 plt.imshow(final_stop_sign_img)
 plt.title("Extracted Stop sign image")
 plt.axis('off')
+plt.show()
+
+# Show together, with orignal, masked hsv and masked rgb
+fig, axes = plt.subplots(2, 3)
+
+# Row 1: Apple
+axes[0, 0].imshow(apple_img_rgb)
+axes[0, 0].set_title("Original Apple")
+axes[0, 0].axis('off')
+
+axes[0, 1].imshow(apple_img_copy_hsv)
+axes[0, 1].set_title("Masked Apple (HSV)")
+axes[0, 1].axis('off')
+
+axes[0, 2].imshow(final_apple_img)
+axes[0, 2].set_title("Masked Apple (RGB)")
+axes[0, 2].axis('off')
+
+# Row 2: Stop Sign
+axes[1, 0].imshow(stop_sign_img_rgb)
+axes[1, 0].set_title("Original Stop Sign")
+axes[1, 0].axis('off')
+
+axes[1, 1].imshow(stop_sign_img_copy_hsv)
+axes[1, 1].set_title("Masked Sign (HSV)")
+axes[1, 1].axis('off')
+
+axes[1, 2].imshow(final_stop_sign_img)
+axes[1, 2].set_title("Masked Sign (RGB)")
+axes[1, 2].axis('off')
+
+plt.tight_layout()
 plt.show()
 
 
