@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import cv2
+import copy
 
 # Testing if np and cv are successfully imported. 
 myArray = np.array([1,2,3,4])
@@ -66,6 +67,59 @@ plt.imshow(grayscale, cmap='gray')
 plt.title("Grayscale via Average Formula")
 plt.axis('off')
 plt.show()
+
+# Importing apple.jpg and stop-sign.jpg and creating their copies. 
+
+apple_img = cv2.imread('./Images/apple.jpg')
+apple_img_rgb = cv2.cvtColor(apple_img, cv2.COLOR_BGR2RGB)
+
+stop_sign_img = cv2.imread('./Images/stop-sign.jpg')
+stop_sign_img_rgb =cv2.cvtColor(stop_sign_img, cv2.COLOR_BGR2RGB)
+
+#Creating deep copies of the apple and stop sign image
+
+apple_img_copy = copy.deepcopy(apple_img_rgb)
+stop_sign_img_copy = copy.deepcopy(stop_sign_img_rgb)
+
+# Converting the copies to HSV color space
+
+apple_img_copy_hsv = cv2.cvtColor(apple_img_copy, cv2.COLOR_RGB2HSV)
+stop_sign_img_copy_hsv = cv2.cvtColor(stop_sign_img_copy, cv2.COLOR_RGB2HSV)
+
+print(apple_img_copy_hsv, "apple hsv")
+print(stop_sign_img_copy_hsv,"stop sign hsv")
+
+# Use binary operations to extract the pixels containing apple and the stop sign respectively
+
+H_APPLE = apple_img_copy_hsv[:, :, 0]
+S_APPLE = apple_img_copy_hsv[:, :, 1]
+V_APPLE = apple_img_copy_hsv[:, :, 2]
+
+H_STOP_SIGN = stop_sign_img_copy_hsv[:, :, 0]
+S_STOP_SIGN = stop_sign_img_copy_hsv[:, :, 1]
+V_STOP_SIGN = stop_sign_img_copy_hsv[:, :, 2]
+
+# Creating mask for the green apple
+
+green_apple_mask = (H_APPLE >= 40) & (H_APPLE <= 80) & (S_APPLE >= 40) & (V_APPLE >= 40)
+apple_img_copy_hsv[~green_apple_mask] = 0 #black
+
+# Converting apple image back to rgb
+
+final_apple_img = cv2.cvtColor(apple_img_copy_hsv, cv2.COLOR_HSV2RGB)
+
+plt.imshow(final_apple_img)
+plt.title("Extracted Green Apple")
+plt.axis('off')
+plt.show()
+
+
+
+
+
+
+
+
 
 # print(myArray)
 # print(cv2.__version__)
