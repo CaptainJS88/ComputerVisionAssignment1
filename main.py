@@ -101,8 +101,8 @@ V_STOP_SIGN = stop_sign_img_copy_hsv[:, :, 2]
 
 # Creating mask for the green apple
 
-green_apple_mask = (H_APPLE >= 40) & (H_APPLE <= 80) & (S_APPLE >= 40) & (V_APPLE >= 40)
-apple_img_copy_hsv[~green_apple_mask] = 0 #black
+green_apple_mask = (H_APPLE >= 30) & (H_APPLE <= 60) & (S_APPLE >= 30) & (V_APPLE >= 20)
+apple_img_copy_hsv[~green_apple_mask] = 1 
 
 # Converting apple image back to rgb
 
