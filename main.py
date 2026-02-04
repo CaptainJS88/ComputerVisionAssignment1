@@ -219,7 +219,7 @@ img_bandnoise_fft_shift_copy = img_bandnoise_fft_shift.copy()
 # Filtering the bright spots out of the fourier image
 bright_spot_values = [50, 90, 130, 220, 260, 300]
 for i in bright_spot_values:
-    img_bandnoise_fft_shift_copy[:, (i-3):(i+3)] = 0
+    img_bandnoise_fft_shift_copy[:, (i-10):(i+10)] = 0
 
 # Moving the filtered image back to corners from the center
 f_ishift = np.fft.ifftshift(img_bandnoise_fft_shift_copy)
