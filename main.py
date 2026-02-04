@@ -204,6 +204,54 @@ plt.tight_layout()
 plt.show()
 
 
+# Question 3 - read bandnoise image, apply fourier transform and denoise
+
+# Reading the image and converting to Grayscale
+img_bandnoise = cv2.imread('./Images/bandnoise.png')
+img_bandnoise_gray = cv2.cvtColor(img_bandnoise, cv2.COLOR_BGR2GRAY)
+
+# Applying fourier transform to the array, and shifting 
+img_bandnoise_fft = np.fft.fft2(img_bandnoise_gray)
+img_bandnoise_fft_shift = np.fft.fftshift(img_bandnoise_fft)
+magnitude_spectrum = 20 * np.log(np.abs(img_bandnoise_fft_shift))
+img_bandnoise_fft_shift_copy = img_bandnoise_fft_shift.copy()
+
+# Filtering the bright spots out of the fourier image
+bright_spot_values = [50, 90, 130, 220, 260, 300]
+for i in bright_spot_values:
+    img_bandnoise_fft_shift_copy[:, (i-3):(i+3)] = 0
+
+# Moving the filtered image back to corners from the center
+f_ishift = np.fft.ifftshift(img_bandnoise_fft_shift_copy)
+
+# Inverse FFT (Frequency -> Spatial)
+img_bandnoise_back = np.fft.ifft2(f_ishift)
+
+# Magnitude (Complex -> Real pixel values)
+img_bandnoise_back = np.abs(img_bandnoise_back)
+
+# Showing the plotted images
+fig, axes = plt.subplots(1, 3)
+
+# Plot 1: Original gray image
+# We use axes[0] because 'axes' is a 1D list here
+axes[0].set_title("Bandnoise Gray Image")
+axes[0].imshow(img_bandnoise_gray, cmap='gray')
+
+# Plot 2: Fourier image
+# We use axes[1] for the second plot in the list
+axes[1].set_title("Fourier Image")
+axes[1].imshow(magnitude_spectrum, cmap='gray')
+
+# Plot 3: Cleaned image
+axes[2].set_title("Clean Image (Filtered)")
+axes[2].imshow(img_bandnoise_back, cmap='gray')
+
+plt.tight_layout()
+plt.show()
+
+
+
 
 
 
