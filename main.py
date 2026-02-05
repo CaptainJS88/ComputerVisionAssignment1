@@ -250,20 +250,58 @@ axes[2].imshow(img_bandnoise_back, cmap='gray')
 plt.tight_layout()
 plt.show()
 
+# Question 4 - Dog image changes
+
+# Importing the dog image
+
+img_dog = cv2.imread('./Images/dog.jpg')
+img_dog_rgb = cv2.cvtColor(img_dog, cv2.COLOR_BGR2RGB)
+img_dog_float = img_dog_rgb.astype(np.float32)
+
+# Applying the filters
+img_dog_darker = np.clip(img_dog_float - 128, 0, 255).astype(np.uint8)
+img_dog_low_contrast = (img_dog_float / 2).astype(np.uint8)
+img_dog_inverted = 255 - img_dog
+img_dog_brighter = np.clip(img_dog_float + 128, 0, 255).astype(np.uint8)
+img_dog_high_contrast = np.clip(img_dog_float * 2, 0, 255).astype(np.uint8)
+
+fig, axes = plt.subplots(2, 3, figsize=(15, 10))
+    
+# Flatten the axes array to make indexing easier (0 to 5)
+ax = axes.flatten()
+
+# 0. Original
+ax[0].imshow(img_dog_rgb)
+ax[0].set_title("Original")
+ax[0].axis('off')
+
+# 1. Darker (a)
+ax[1].imshow(img_dog_darker)
+ax[1].set_title("Darker (-128)")
+ax[1].axis('off')
+
+# 2. Low Contrast (b)
+ax[2].imshow(img_dog_low_contrast)
+ax[2].set_title("Low Contrast (/2)")
+ax[2].axis('off')
+
+# 3. Invert (c)
+ax[3].imshow(img_dog_inverted)
+ax[3].set_title("Inverted")
+ax[3].axis('off')
+
+# 4. Brighter (d)
+ax[4].imshow(img_dog_brighter)
+ax[4].set_title("Brighter (+128)")
+ax[4].axis('off')
+
+# 5. High Contrast (e)
+ax[5].imshow(img_dog_high_contrast)
+ax[5].set_title("High Contrast (*2)")
+ax[5].axis('off')
+
+plt.tight_layout()
+plt.show()
 
 
 
-
-
-
-
-
-
-# print(myArray)
-# print(cv2.__version__)
-
-# print(type(img))   # Should be <class 'numpy.ndarray'>
-# print(img.shape)  # Should be (Height, Width, Channels)
-# print(img.dtype)  # Should be uint8
-# print(img)
-# print(img_rgb)
