@@ -261,7 +261,7 @@ img_dog_float = img_dog_rgb.astype(np.float32)
 # Applying the filters
 img_dog_darker = np.clip(img_dog_float - 128, 0, 255).astype(np.uint8)
 img_dog_low_contrast = (img_dog_float / 2).astype(np.uint8)
-img_dog_inverted = 255 - img_dog
+img_dog_inverted = 255 - img_dog_rgb
 img_dog_brighter = np.clip(img_dog_float + 128, 0, 255).astype(np.uint8)
 img_dog_high_contrast = np.clip(img_dog_float * 2, 0, 255).astype(np.uint8)
 
@@ -303,5 +303,48 @@ ax[5].axis('off')
 plt.tight_layout()
 plt.show()
 
+# Question 5 
 
+img_cameraman = cv2.imread('./Images/cameraman.jpeg')
+img_cameraman_rgb = cv2.cvtColor(img_cameraman, cv2.COLOR_BGR2RGB)
 
+# Average Blur 
+img_blur_9 = cv2.blur(img_cameraman_rgb, (9, 9), borderType=cv2.BORDER_CONSTANT)
+img_blur_25 = cv2.blur(img_cameraman_rgb, (25, 25), borderType=cv2.BORDER_CONSTANT)
+
+fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+axes[0].imshow(img_cameraman_rgb); axes[0].set_title("Original"); axes[0].axis('off')
+axes[1].imshow(img_blur_9); axes[1].set_title("Avg Blur 9x9"); axes[1].axis('off')
+axes[2].imshow(img_blur_25); axes[2].set_title("Avg Blur 25x25"); axes[2].axis('off')
+plt.show()
+
+# Gaussian Blur 
+img_gauss_2 = cv2.GaussianBlur(img_cameraman_rgb, (9, 9), 2.0, borderType=cv2.BORDER_CONSTANT)
+img_gauss_15 = cv2.GaussianBlur(img_cameraman_rgb, (25, 25), 15, borderType=cv2.BORDER_CONSTANT)
+
+fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+axes[0].imshow(img_cameraman_rgb); axes[0].set_title("Original"); axes[0].axis('off')
+axes[1].imshow(img_gauss_2); axes[1].set_title("Gaussian 9x9 (s=2.0)"); axes[1].axis('off')
+axes[2].imshow(img_gauss_15); axes[2].set_title("Gaussian 25x25 (s=15)"); axes[2].axis('off')
+plt.show()
+
+# Median Blur 
+img_median_5 = cv2.medianBlur(img_cameraman_rgb, 5)
+img_median_15 = cv2.medianBlur(img_cameraman_rgb, 15)
+
+fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+axes[0].imshow(img_cameraman_rgb); axes[0].set_title("Original"); axes[0].axis('off')
+axes[1].imshow(img_median_5); axes[1].set_title("Median 5x5"); axes[1].axis('off')
+axes[2].imshow(img_median_15); axes[2].set_title("Median 15x15"); axes[2].axis('off')
+plt.show()
+
+# Resize 
+img_original_resized = cv2.resize(img_cameraman_rgb, (40, 40))
+# Note: Using the Gaussian result from Part B (img_gauss_15)
+img_blur_resized = cv2.resize(img_gauss_15, (40, 40))
+
+fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+axes[0].imshow(img_cameraman_rgb); axes[0].set_title("Original"); axes[0].axis('off')
+axes[1].imshow(img_original_resized); axes[1].set_title("Resized Original (40x40)"); axes[1].axis('off')
+axes[2].imshow(img_blur_resized); axes[2].set_title("Resized Blur (40x40)"); axes[2].axis('off')
+plt.show()
